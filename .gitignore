@@ -1,0 +1,4 @@
+thelounge/
+nginx/ssl/*
+!nginx/ssl/.gitkeep
+

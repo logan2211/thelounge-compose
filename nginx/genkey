@@ -1,0 +1,7 @@
+DOMAIN=${DOMAIN:-example.com}
+openssl req -new -nodes -sha256 -x509 -newkey rsa:2048 -text \
+-subj "/C=US/ST=Texas/L=DFW/O=IT/CN=${DOMAIN}/subjectAltName=DNS.1=${DOMAIN}" \
+-days 3650 \
+-keyout ssl/cert.key \
+-out ssl/cert.pem \
+-extensions v3_ca

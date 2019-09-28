@@ -1,0 +1,23 @@
+---
+version: '3'
+services:
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - '4600:443'
+    networks:
+      - cluster
+    restart: unless-stopped
+    volumes:
+      - ./nginx/config:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+  thelounge:
+    image: linuxserver/thelounge
+    networks:
+      - cluster
+    volumes:
+      - ./thelounge/config:/config
+
+networks:
+  cluster:
+    driver: bridge

@@ -1,0 +1,21 @@
+dist: bionic
+
+services:
+  - docker
+
+env:
+  - DOCKER_COMPOSE_VERSION=latest
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - URL=$(curl -Ls -o /dev/null -w %{url_effective}  https://github.com/docker/compose/releases/${DOCKER_COMPOSE_VERSION}/)
+  - curl -L ${URL}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+install:
+  - pushd nginx; ./genkey; popd
+  - docker-compose up -d
+
+script:
+  - curl https://127.0.0.1:4600
