@@ -4,12 +4,11 @@ services:
   - docker
 
 env:
-  - DOCKER_COMPOSE_VERSION=latest
+  - DOCKER_COMPOSE_VERSION=1.24.1 DOMAIN=127.0.0.1
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
-  - URL=$(curl -Ls -o /dev/null -w %{url_effective}  https://github.com/docker/compose/releases/${DOCKER_COMPOSE_VERSION}/)
-  - curl -L ${URL}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` -o docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 
@@ -18,4 +17,6 @@ install:
   - docker-compose up -d
 
 script:
-  - curl https://127.0.0.1:4600
+  - sudo cp nginx/ssl/cert.pem /usr/local/share/ca-certificates/thelounge.crt
+  - sudo update-ca-certificates
+  - curl -I https://127.0.0.1:4600
